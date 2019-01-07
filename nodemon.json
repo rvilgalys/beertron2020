@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_USER": "beerAdmin",
+    "MONGO_PASSWORD": "hopasauras",
+    "MONGO_DB": "beer-database"
+  }
+}
