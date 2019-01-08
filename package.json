@@ -15,7 +15,12 @@
     "express": "^4.16.4",
     "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rvilgalys/beertron2020.git"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"

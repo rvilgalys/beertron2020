@@ -2,6 +2,7 @@
   "env": {
     "MONGO_USER": "beerAdmin",
     "MONGO_PASSWORD": "hopasauras",
-    "MONGO_DB": "beer-database"
+    "MONGO_DB": "beer-database",
+    "JWT_KEY": "HdL7BiAUjnefhnhem[VGZYNetopqTe"
   }
 }

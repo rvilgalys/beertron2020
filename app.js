@@ -4,6 +4,9 @@ const graphqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const isAuth = require("./middleware/is-auth");
 
 const Beer = require("./models/beer");
 const User = require("./models/user");
@@ -11,6 +14,8 @@ const User = require("./models/user");
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use(isAuth);
 
 app.use(
   "/graphql",
@@ -34,6 +39,11 @@ app.use(
           draftList: [Beer!]!      
         }
 
+        type AuthData {
+          userID: ID!
+          token: String!
+          tokenExpiration: Int!
+        }
 
         input BeerInput {
             breweryName: String!
@@ -57,6 +67,7 @@ app.use(
         type RootQuery {
             beers: [Beer!]!
             userDraftList(userEmail: String): [Beer!]!
+            login(email: String!, password: String!): AuthData!
         }
 
         type RootMutation {
@@ -101,7 +112,10 @@ app.use(
           });
       },
 
-      createBeer: args => {
+      createBeer: async (args, req) => {
+        if (!req.isAuth) {
+          throw new Error("No user is authenticated.");
+        }
         // construct a new object from Mongoose model and push to DB
         const beer = new Beer({
           breweryName: args.beerInput.breweryName,
@@ -110,7 +124,7 @@ app.use(
           abv: args.beerInput.abv,
           ibu: args.beerInput.ibu,
           tapped: false,
-          creator: "5c3413526da647158b74f6aa"
+          creator: req.userID
         });
         // return as a promise
         return beer
@@ -154,10 +168,17 @@ app.use(
           });
       },
 
-      updateBeerDraft: args => {
+      updateBeerDraft: async (args, req) => {
+        if (!req.isAuth) {
+          throw new Error("No user is authenticated.");
+        }
+        if (req.userID != args.updateInput.userID) {
+          throw new Error("Users can only update their own draft list.");
+        }
         let updatedUser; // placeholder for later in the promise chain
 
         return User.findOne({ _id: args.updateInput.userID })
+          .populate("draftList")
           .then(user => {
             // first check that user exists
             if (!user) {
@@ -188,6 +209,32 @@ app.use(
           .catch(err => {
             throw err;
           });
+      },
+
+      login: async ({ email, password }) => {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+          throw new Error("User does not exist.");
+        }
+        const pwValid = await bcrypt.compare(password, user.password);
+        if (!pwValid) {
+          throw new Error("Password is invalid."); // we could make these the same message (more secure), but right now separated for easier debugging
+        }
+        const token = await jwt.sign(
+          {
+            userID: user.id,
+            email: user.email
+          },
+          process.env.JWT_KEY,
+          {
+            expiresIn: "1h"
+          }
+        );
+        return {
+          userID: user.id,
+          token: token,
+          tokenExpiration: 1
+        };
       }
     },
 
@@ -211,3 +258,5 @@ mongoose
   .catch(err => {
     console.log(err);
   });
+
+module.exports = app;
