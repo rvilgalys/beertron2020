@@ -30,7 +30,8 @@ app.use(
           _id: ID!
           email: String!
           # password is nullable since it will not be returned to any queries
-          password: String      
+          password: String
+          draftList: [Beer!]!      
         }
 
 
@@ -47,13 +48,21 @@ app.use(
           password: String!
         }
 
+        input UpdateBeerDraftInput {
+          beerID: ID!
+          userID: ID!
+          tapped: Boolean
+        }
+
         type RootQuery {
             beers: [Beer!]!
+            userDraftList(userEmail: String): [Beer!]!
         }
 
         type RootMutation {
             createBeer(beerInput: BeerInput): Beer
             createUser(userInput: UserInput): User
+            updateBeerDraft(updateInput: UpdateBeerDraftInput): User
         }
 
         schema {
@@ -75,6 +84,23 @@ app.use(
           });
       },
 
+      userDraftList: args => {
+        return User.findOne({ email: args.userEmail })
+          .then(user => {
+            if (!user) {
+              throw new Error("User does not exist.");
+            }
+            return user;
+          })
+          .then(user => {
+            return user._doc.draftList;
+          })
+          .catch(error => {
+            console.log(error);
+            throw error;
+          });
+      },
+
       createBeer: args => {
         // construct a new object from Mongoose model and push to DB
         const beer = new Beer({
@@ -84,7 +110,7 @@ app.use(
           abv: args.beerInput.abv,
           ibu: args.beerInput.ibu,
           tapped: false,
-          creator: "5c340b9a31649313895cecf2"
+          creator: "5c3413526da647158b74f6aa"
         });
         // return as a promise
         return beer
@@ -111,7 +137,8 @@ app.use(
           .then(hashedPassword => {
             const user = new User({
               email: args.userInput.email,
-              password: hashedPassword
+              password: hashedPassword,
+              draftList: []
             });
             return user.save(); // actually create our new user in the DB
           })
@@ -125,8 +152,45 @@ app.use(
           .catch(err => {
             throw err;
           });
+      },
+
+      updateBeerDraft: args => {
+        let updatedUser; // placeholder for later in the promise chain
+
+        return User.findOne({ _id: args.updateInput.userID })
+          .then(user => {
+            // first check that user exists
+            if (!user) {
+              throw new Error("User not found!");
+            }
+            updatedUser = user; // set placeholder
+            return Beer.findById(args.updateInput.beerID); // return updated beer for next action
+          })
+          .then(updatedBeer => {
+            if (!updatedBeer) {
+              throw new Error("Beer not found!");
+            }
+            if (args.updateInput.tapped) {
+              // add or remove as needed
+              updatedUser.draftList.push(updatedBeer);
+            } else {
+              updatedUser.draftList.remove(updatedBeer);
+            }
+            return updatedUser.save();
+          })
+          .then(result => {
+            return {
+              ...result._doc,
+              _id: result._doc._id.toString(),
+              password: null // never return these duh
+            };
+          })
+          .catch(err => {
+            throw err;
+          });
       }
     },
+
     graphiql: true
   })
 );
