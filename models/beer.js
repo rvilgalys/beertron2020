@@ -26,6 +26,10 @@ const beerSchema = new Schema({
   tapped: {
     type: Boolean,
     required: true
+  },
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 
