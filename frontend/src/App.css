@@ -1,32 +1,94 @@
-.App {
+html {
+  --main-bg: #ffbf009c;
+  --alt-bg: #dc0073;
+  --alt-bg-highlight: #04e762;
+  --header-bg: #00a1e4;
+  --header-text-color: #00a1e4;
+  --header-text-highlight: #00a1e4;
+  --primary-text-color: #dc0073;
+  --alt-text-color: #dc0073;
+  --input-border-color: #04e7638f;
+  --text-shadow-color: #8bfc002f;
+  --button-bg: #00a1e4;
+  --button-bg-hover: #4ecaff;
+  --button-text: #84f1ff;
+  --auth-area-bg: #31517049;
+}
+
+.main-content {
+  margin: 5rem;
+  font-size: 20px;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+body {
+  background-color: var(--main-bg);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+input {
+  margin: 10px auto;
+  background-color: var(--main-bg);
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+
+  width: 15rem;
+  height: 2rem;
+
+  font-size: 18px;
+  text-align: center;
+
+  box-shadow: 1px 1px 0px 0px var(--alt-bg), 2px 2px 0px 0px var(--alt-bg),
+    3px 3px 0px 0px var(--alt-bg), 4px 4px 0px 0px var(--alt-bg);
 }
 
-.App-link {
-  color: #61dafb;
+h3 {
+  color: var(--primary-text-color);
+  text-shadow: 1px 1px 0px var(--text-shadow-color),
+    2px 2px 0px var(--text-shadow-color), 3px 3px 0px var(--text-shadow-color);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  color: var(--primary-text-color);
+  text-shadow: 1px 1px 0px var(--text-shadow-color),
+    2px 2px 0px var(--text-shadow-color), 3px 3px 0px var(--text-shadow-color);
+}
+
+.content-area {
+  border: 3px dashed var(--alt-bg);
+  background: var(--auth-area-bg);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+button {
+  background: var(--button-bg);
+  border: 2px solid var(--alt-bg);
+  border-radius: 8px;
+  margin: 1rem;
+  height: 3rem;
+  width: 12rem;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--button-text);
+  transition: 0.1s;
+  box-shadow: 1px 1px 0px 0px var(--alt-bg), 2px 2px 0px 0px var(--alt-bg),
+    3px 3px 0px 0px var(--alt-bg), 4px 4px 0px 0px var(--alt-bg);
+}
+
+button:hover,
+button:active {
+  background: var(--button-bg-hover);
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  box-shadow: 1px 1px 0px 0px var(--alt-bg);
+  transform: scale(0.95);
+}
+
+.beer-search {
+  width: 70%;
 }

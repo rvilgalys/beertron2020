@@ -4,6 +4,7 @@ const graphqlHttp = require("express-graphql");
 const { buildSchema } = require("graphql");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const cors = require("cors");
 const jwt = require("jsonwebtoken");
 
 const isAuth = require("./middleware/is-auth");
@@ -16,6 +17,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use(isAuth);
+app.use(cors());
 
 app.use(
   "/graphql",
@@ -253,7 +255,7 @@ mongoose
     }@cluster0-czne4.mongodb.net/${process.env.MONGO_DB}?retryWrites=true`
   )
   .then(() => {
-    app.listen(3000);
+    app.listen(4000);
   })
   .catch(err => {
     console.log(err);

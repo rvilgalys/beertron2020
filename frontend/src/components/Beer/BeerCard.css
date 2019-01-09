@@ -1,0 +1,112 @@
+html {
+  --main-bg: #ffbf009c;
+  --alt-bg: #dc0073;
+  --alt-bg-highlight: #04e762;
+  --header-bg: #00a1e4;
+  --header-text-color: #00a1e4;
+  --header-text-highlight: #00a1e4;
+  --primary-text-color: #dc0073;
+  --alt-text-color: #dc0073;
+  --input-border-color: #04e7638f;
+  --text-shadow-color: #8bfc002f;
+  --button-bg: #00a1e4;
+  --button-bg-hover: #4ecaff;
+  --button-text: #84f1ff;
+  --auth-area-bg: #31517049;
+
+  --beer-card-border: #00a1e4;
+  --beer-card-element-border: #84f1ff;
+  --beer-card-background: #84f1ff6e;
+  --on-draft-color: #dc0073;
+  --on-draft-highlight: #ff40a3;
+}
+
+.beer-card {
+  border: 2px solid var(--beer-card-border);
+  background: var(--beer-card-background);
+  border-radius: 1rem;
+  padding-bottom: 10px;
+  margin: 10px;
+  display: grid;
+  grid-template-areas:
+    "beer-name draft-button"
+    "brewery-name beer-abv"
+    "beer-style beer-ibu";
+  transition: 0.2s;
+}
+
+.beer-name {
+  grid-area: "beer-name";
+  font-size: 24px;
+  border: 1px solid var(--alt-text-color);
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+}
+
+.brewery-name,
+.beer-style,
+.beer-abv,
+.beer-ibu {
+  border: 1px solid var(--beer-card-element-border);
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 5px;
+  padding: 10px;
+}
+
+.brewery-name::before,
+.beer-style::before {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.beer-abv::after,
+.beer-ibu::after {
+  margin-top: 3px;
+  font-size: 12px;
+}
+
+.brewery-name {
+  grid-area: "brewery-name";
+}
+
+.brewery-name::before {
+  content: "Brewery: ";
+}
+
+.beer-style {
+  grid-area: "beer-style";
+}
+
+.beer-style::before {
+  content: "Style: ";
+}
+
+.beer-abv {
+  grid-area: "beer-abv";
+}
+
+.beer-abv::after {
+  content: " abv";
+}
+
+.beer-ibu {
+  grid-area: "beer-ibu";
+}
+
+.beer-ibu::after {
+  content: " ibu";
+}
+
+.beer-draft-button {
+  font-size: 16px;
+  width: auto;
+}
+
+.on-draft {
+  background: var(--on-draft-color);
+}
+.on-draft :hover {
+  background: var(--on-draft-highlight);
+}
