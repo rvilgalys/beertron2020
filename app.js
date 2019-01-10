@@ -20,6 +20,7 @@ app.use(bodyParser.json());
 //not enough time to finish this part -- another time alas!
 
 app.use(cors());
+app.use(express.static("frontend/build"));
 
 app.use(
   "/graphql",

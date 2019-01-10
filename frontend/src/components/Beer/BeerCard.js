@@ -6,7 +6,7 @@ const BeerCard = props => {
   let draftButtonClasses = "beer-draft-button";
   let draftButtonLabel = "🍺 Put on Draft 🍺";
 
-  if (props.beerData.tapped) {
+  if (props.tapped) {
     draftButtonClasses += " on-draft";
     draftButtonLabel = "🍺 On Draft 🍺";
   }
