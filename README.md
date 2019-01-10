@@ -2,6 +2,8 @@
 
 Rim Vilgalys
 
+[Live Demo on Heroku](https://salty-crag-47042.herokuapp.com/)
+
 ### Goals
 
 This was a test assignment for a position at BruVue, of outlining a full-stack app that displays a database of beers and allows for a user to select which beers should appear in a simple 'On Draft' menu.
