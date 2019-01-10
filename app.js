@@ -263,7 +263,7 @@ app.use(
   })
 );
 
-app.use(express.static("frontend/build"));
+app.use(express.static("frontend/build/"));
 
 // app.get("/", (req, res, next) => {
 //   res.send("Beers");
