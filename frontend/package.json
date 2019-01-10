@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:4000",
+  "homepage": "https://salty-crag-47042.herokuapp.com/",
   "dependencies": {
     "apollo-boost": "^0.1.23",
     "graphql": "^14.0.2",

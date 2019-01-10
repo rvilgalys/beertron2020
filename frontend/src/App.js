@@ -34,10 +34,23 @@ class App extends Component {
             <MainNav />
             <div className="main-content">
               <Switch>
-                <Redirect from="/" to="/auth" exact />
-                <Route path="/auth" component={AuthPage} />
-                <Route path="/drafts" component={DraftsPage} />
-                <Route path="/beerDB" component={BeerDBPage} />
+                <Redirect
+                  from={`${process.env.PUBLIC_URL}/`}
+                  to={`${process.env.PUBLIC_URL}/auth`}
+                  exact
+                />
+                <Route
+                  path={`${process.env.PUBLIC_URL}/auth`}
+                  component={AuthPage}
+                />
+                <Route
+                  path={`${process.env.PUBLIC_URL}/drafts`}
+                  component={DraftsPage}
+                />
+                <Route
+                  path={`${process.env.PUBLIC_URL}/beerDB`}
+                  component={BeerDBPage}
+                />
               </Switch>
             </div>
           </React.Fragment>

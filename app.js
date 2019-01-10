@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const isAuth = require("./middleware/is-auth");
 
@@ -263,11 +264,11 @@ app.use(
   })
 );
 
-app.use(express.static("frontend/build/"));
+app.use(express.static(path.join(__dirname, "frontend/build")));
 
-// app.get("/", (req, res, next) => {
-//   res.send("Beers");
-// });
+app.get("/", (req, res, next) => {
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+});
 
 mongoose
   .connect(
