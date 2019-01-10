@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 //not enough time to finish this part -- another time alas!
 
 app.use(cors());
-app.use(express.static("frontend/build"));
 
 app.use(
   "/graphql",
@@ -264,9 +263,11 @@ app.use(
   })
 );
 
-app.get("/", (req, res, next) => {
-  res.send("Beers");
-});
+app.use(express.static("frontend/build"));
+
+// app.get("/", (req, res, next) => {
+//   res.send("Beers");
+// });
 
 mongoose
   .connect(
