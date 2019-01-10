@@ -16,7 +16,9 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use(isAuth);
+//app.use(isAuth);
+//not enough time to finish this part -- another time alas!
+
 app.use(cors());
 
 app.use(
@@ -66,6 +68,10 @@ app.use(
           tapped: Boolean
         }
 
+        input ToggleDraftStatusInput {
+          beerID: ID!
+        }
+
         type RootQuery {
             beers: [Beer!]!
             userDraftList(userEmail: String): [Beer!]!
@@ -76,6 +82,7 @@ app.use(
             createBeer(beerInput: BeerInput): Beer
             createUser(userInput: UserInput): User
             updateBeerDraft(updateInput: UpdateBeerDraftInput): User
+            toggleDraftStatus(toggleDraftInput: ToggleDraftStatusInput): Beer
         }
 
         schema {
@@ -115,9 +122,9 @@ app.use(
       },
 
       createBeer: async (args, req) => {
-        if (!req.isAuth) {
-          throw new Error("No user is authenticated.");
-        }
+        // if (!req.isAuth) {
+        //   throw new Error("No user is authenticated.");
+        // }
         // construct a new object from Mongoose model and push to DB
         const beer = new Beer({
           breweryName: args.beerInput.breweryName,
@@ -171,12 +178,12 @@ app.use(
       },
 
       updateBeerDraft: async (args, req) => {
-        if (!req.isAuth) {
-          throw new Error("No user is authenticated.");
-        }
-        if (req.userID != args.updateInput.userID) {
-          throw new Error("Users can only update their own draft list.");
-        }
+        // if (!req.isAuth) {
+        //   throw new Error("No user is authenticated.");
+        // }
+        // if (req.userID != args.updateInput.userID) {
+        //   throw new Error("Users can only update their own draft list.");
+        // }
         let updatedUser; // placeholder for later in the promise chain
 
         return User.findOne({ _id: args.updateInput.userID })
@@ -207,6 +214,18 @@ app.use(
               _id: result._doc._id.toString(),
               password: null // never return these duh
             };
+          })
+          .catch(err => {
+            throw err;
+          });
+      },
+
+      toggleDraftStatus: async args => {
+        return Beer.findById(args.toggleDraftInput.beerID)
+          .then(beer => {
+            beer.tapped = !beer.tapped;
+            beer.save();
+            return beer;
           })
           .catch(err => {
             throw err;

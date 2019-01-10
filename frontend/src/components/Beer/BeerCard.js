@@ -6,7 +6,7 @@ const BeerCard = props => {
   let draftButtonClasses = "beer-draft-button";
   let draftButtonLabel = "🍺 Put on Draft 🍺";
 
-  if (props.beerData.drafted) {
+  if (props.beerData.tapped) {
     draftButtonClasses += " on-draft";
     draftButtonLabel = "🍺 On Draft 🍺";
   }
@@ -16,7 +16,13 @@ const BeerCard = props => {
       <h3>
         <span className="beer-name">{props.beerData.beerName}</span>
       </h3>
-      <button className={draftButtonClasses}>{draftButtonLabel}</button>
+
+      <button
+        className={draftButtonClasses}
+        onClick={() => props.clicked(props.beerData._id)}
+      >
+        {draftButtonLabel}
+      </button>
 
       <span className="brewery-name">{props.beerData.breweryName}</span>
       <span className="beer-style">{props.beerData.beerStyle}</span>

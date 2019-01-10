@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import BeerCard from "../components/Beer/BeerCard";
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 
 class BeerDBPage extends Component {
@@ -30,9 +30,21 @@ class BeerDBPage extends Component {
         beerStyle
         abv
         ibu
+        tapped
       }
     }
   `;
+
+  toggleDraftMutation = gql`
+    mutation ToggleDraftStatus($beerID: ID!) {
+      toggleDraftStatus(toggleDraftInput: { beerID: $beerID }) {
+        beerName
+        tapped
+      }
+    }
+  `;
+
+  toggleDraftStatus = draftID => {};
 
   render() {
     return (
@@ -45,7 +57,7 @@ class BeerDBPage extends Component {
           placeholder="Search Here"
         />
         <Query query={this.beerDBQuery}>
-          {({ loading, error, data }) => {
+          {({ loading, error, data, refetch }) => {
             if (loading) return <p>Loading...</p>;
             if (error) return <p>Error!</p>;
             if (error) console.log(error);
@@ -62,12 +74,34 @@ class BeerDBPage extends Component {
                   beer.beerStyle
                     .toLowerCase()
                     .includes(this.state.searchTerms.toLowerCase())
-                )
+                ) {
                   return true;
+                }
                 return false;
               })
-              .slice(0, 50)
-              .map(dbBeerData => <BeerCard beerData={dbBeerData} />);
+              .slice(0, 50) // max of 50 beers returned so we don't kill the page (would add multiple pages or lazy load with more time)
+              .map(dbBeerData => {
+                return (
+                  <Mutation
+                    mutation={this.toggleDraftMutation}
+                    key={dbBeerData._id}
+                    onCompleted={() => refetch()} // this is not ideal but it works for now
+                  >
+                    {(toggleDraftMutation, { loading, error }) => (
+                      <BeerCard
+                        beerData={dbBeerData}
+                        tapped={dbBeerData.tapped}
+                        showDraftButton={true}
+                        clicked={id => {
+                          toggleDraftMutation({
+                            variables: { beerID: id }
+                          });
+                        }}
+                      />
+                    )}
+                  </Mutation>
+                );
+              });
           }}
         </Query>
       </div>

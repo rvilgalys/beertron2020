@@ -11,12 +11,7 @@ class AuthPage extends Component {
       <div className="content-area">
         <h3>Register New User</h3>
         Email: <br />
-        <input
-          className="new-user-email"
-          type="email"
-          floatingLabelText="email"
-        />{" "}
-        <br />
+        <input className="new-user-email" type="email" /> <br />
         Password: <br />
         <input className="new-user-password" type="password" /> <br />
         <button onClick={this.toggleNewUser}>Login Existing User</button>
