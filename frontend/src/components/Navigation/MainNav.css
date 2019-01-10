@@ -7,6 +7,7 @@ html {
   --header-text-highlight: #ffa552;
   --primary-text-color: black;
   --alt-text-color: #ba5624;
+  --nav-button-text-color: rgb(43, 43, 43);
 }
 
 .main-nav-header {
@@ -43,7 +44,7 @@ html {
 
 .main-nav-list a {
   text-decoration: none;
-  color: #e27aad;
+  color: var(--nav-button-text-color);
   padding: 0.7rem;
   background: var(--alt-bg);
   border-radius: 5px;
