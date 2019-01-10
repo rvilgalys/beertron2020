@@ -14,7 +14,7 @@ import "./App.css";
 const token = localStorage.getItem("token");
 
 const client = new ApolloClient({
-  uri: "http://localhost/graphql",
+  uri: `http://localhost:${process.env.PORT}/graphql`,
   request: async operation => {
     operation.setContext({
       headers: {
