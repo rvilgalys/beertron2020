@@ -14,7 +14,7 @@ import "./App.css";
 const token = localStorage.getItem("token");
 
 const client = new ApolloClient({
-  uri: `http://localhost:${process.env.PORT}/graphql`,
+  uri: `https://salty-crag-47042.herokuapp.com/graphql`,
   request: async operation => {
     operation.setContext({
       headers: {
