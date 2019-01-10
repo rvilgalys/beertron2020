@@ -33,6 +33,7 @@ html {
     "brewery-name beer-abv"
     "beer-style beer-ibu";
   transition: 0.2s;
+  break-inside: avoid;
 }
 
 .beer-name {
